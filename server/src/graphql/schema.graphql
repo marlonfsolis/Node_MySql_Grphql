@@ -1,0 +1,25 @@
+type Query {
+    permissions: [Permission!]
+}
+
+type Mutation {
+    permissionCreate(input: PermissionCrete!): Permission
+}
+
+# Model types
+type Permission {
+    name: String,
+    description: String
+}
+
+type Role {
+    name: String,
+    description: String
+}
+
+
+# Input types
+input PermissionCrete {
+    name: String,
+    description: String
+}
