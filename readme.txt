@@ -1,1 +1,0 @@
-DB project is on Next_Content_Manager project located on React Next project folder.
