@@ -14,7 +14,7 @@ export default class RoleService
 
 
     /**
-     * Get a role list
+     * Get a role_queries list
      */
     async getRoles(params:GetRolesParam): Promise<IResult<IRole[]>> {
         // console.log(params);
@@ -23,7 +23,7 @@ export default class RoleService
 
 
     /**
-     * Create a role
+     * Create a role_queries
      */
     async createRole(r:IRole): Promise<IResult<IRole>> {
         return await this.roleRepo.createRole(r);
@@ -31,7 +31,7 @@ export default class RoleService
 
 
     /**
-     * Delete a role
+     * Delete a role_queries
      */
     async deleteRole(rName:string): Promise<IResult<IRole>> {
         return await this.roleRepo.deleteRole(rName);
@@ -39,21 +39,21 @@ export default class RoleService
 
 
     /**
-     * Get a role
+     * Get a role_queries
      */
     async getRole(rName:string): Promise<IResult<IRole>> {
        return await this.roleRepo.getRole(rName);
     }
 
     /**
-     * Update a role
+     * Update a role_queries
      */
     async updateRole(rName:string, r:IRole): Promise<IResult<IRole>> {
         return await this.roleRepo.updateRole(rName, r);
     }
 
     /**
-     * Get a role with permissions
+     * Get a role_queries with permissions
      */
     async getRoleWithPermissions(rName:string): Promise<IResult<IRoleWithPermissions>> {
         return await this.roleRepo.getRoleWithPermissions(rName);

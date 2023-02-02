@@ -9,7 +9,7 @@ export default class PermissionRepository
     constructor() {}
 
     /**
-     * Get a permission list
+     * Get a permission_queries list
      */
     async getPermissions(params:IGetPermissionsParam): Promise<IResult<IPermission[]>> {
         let permissions = [] as IPermission[];
@@ -49,7 +49,7 @@ export default class PermissionRepository
 
 
     /**
-     * Create a permission
+     * Create a permission_queries
      */
     async createPermission(p:IPermission): Promise<IResult<IPermission>> {
         let permission: IPermission|undefined;
@@ -70,14 +70,14 @@ export default class PermissionRepository
         let sql = `${queries.permission_create} ${queries.permission_read}`;
         const perRes = await db.query(sql, p, {multiStatements:true});
         permission = perRes.getData<IPermission[]>()[0];
-        // console.log(permission);
+        // console.log(permission_queries);
 
         return new ResultOk(permission);
     }
 
 
     /**
-     * Delete a permission
+     * Delete a permission_queries
      */
     async deletePermission(pName:string): Promise<IResult<IPermission>> {
         let permission: IPermission|undefined;
@@ -96,7 +96,7 @@ export default class PermissionRepository
 
 
     /**
-     * Get a permission
+     * Get a permission_queries
      */
     async getPermission(pName:string): Promise<IResult<IPermission>> {
         let permission: IPermission|undefined;
@@ -115,7 +115,7 @@ export default class PermissionRepository
     }
 
     /**
-     * Update a permission
+     * Update a permission_queries
      */
     async updatePermission(pName:string, p:IPermission): Promise<IResult<IPermission>> {
         let permission: IPermission|undefined;

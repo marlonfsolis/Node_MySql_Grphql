@@ -13,7 +13,7 @@ import {validateReq} from "../shared/Err";
 const permServ = new PermissionService();
 
 /**
- * Get permission list.
+ * Get permission_queries list.
  */
 export const getPermissions = async (req:Request, res:Response) => {
     const params = new GetPermissionsParam(req.query);
@@ -30,7 +30,7 @@ export const getPermissions = async (req:Request, res:Response) => {
 
 
 /**
- * Post a permission
+ * Post a permission_queries
  */
 export const createPermission = async (req: Request, res: Response) => {
     const {isValid, errs} = validateReq(req);
@@ -49,7 +49,7 @@ export const createPermission = async (req: Request, res: Response) => {
 
 
 /**
- * DELETE a permission
+ * DELETE a permission_queries
  */
 export const deletePermission = async (req: Request, res: Response) => {
     const pName = req.params.name;
@@ -63,7 +63,7 @@ export const deletePermission = async (req: Request, res: Response) => {
 
 
 /**
- * GET a permission
+ * GET a permission_queries
  */
 export const getPermission = async (req: Request, res: Response) => {
     const pName = req.params.name;
@@ -75,7 +75,7 @@ export const getPermission = async (req: Request, res: Response) => {
 };
 
 
-/** Put a permission */
+/** Put a permission_queries */
 export const updatePermission = async (req: Request, res: Response) => {
     const {isValid, errs} = validateReq(req);
     if (!isValid) {

@@ -12,7 +12,7 @@ export default class PermissionService
     }
 
     /**
-     * Get a permission list
+     * Get a permission_queries list
      */
     async getPermissions(params:IGetPermissionsParam): Promise<IResult<IPermission[]>> {
         return await this.permRepo.getPermissions(params);
@@ -20,7 +20,7 @@ export default class PermissionService
 
 
     /**
-     * Create a permission
+     * Create a permission_queries
      */
     async createPermission(p:IPermission): Promise<IResult<IPermission>> {
         return await this.permRepo.createPermission(p);
@@ -28,21 +28,21 @@ export default class PermissionService
 
 
     /**
-     * Delete a permission
+     * Delete a permission_queries
      */
     async deletePermission(pName:string): Promise<IResult<IPermission>> {
         return await this.permRepo.deletePermission(pName);
     }
 
     /**
-     * Get a permission
+     * Get a permission_queries
      */
     async getPermission(pName:string): Promise<IResult<IPermission>> {
         return await this.permRepo.getPermission(pName);
     }
 
     /**
-     * Update a permission
+     * Update a permission_queries
      */
     async updatePermission(pName:string, p:IPermission): Promise<IResult<IPermission>> {
         return await this.permRepo.updatePermission(pName, p);

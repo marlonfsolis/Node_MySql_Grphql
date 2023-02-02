@@ -67,7 +67,7 @@ export class GetRolesParam extends GetListParam implements IGetRolesParam {
 /* Functions */
 
 /**
- * Validate role input param
+ * Validate role_queries input param
  * */
 export const roleValidator = () => [
     check(`name`).exists().isLength({min:3, max:100}),

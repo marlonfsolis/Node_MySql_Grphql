@@ -57,7 +57,7 @@ export class PermissionModel implements IPermission {
 /* Functions */
 
 /**
- * Validate permission input param
+ * Validate permission_queries input param
  * */
 export const permissionValidator = () => [
     check(`name`).exists().isLength({min:3, max:100}),

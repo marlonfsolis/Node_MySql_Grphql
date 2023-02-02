@@ -13,7 +13,7 @@ import RoleService from "../services/roleService";
 const roleServ = new RoleService();
 
 /**
- * Get role list.
+ * Get role_queries list.
  */
 export const getRoles = async (req:Request, res:Response) => {
     let data: IRole[]|undefined;
@@ -29,7 +29,7 @@ export const getRoles = async (req:Request, res:Response) => {
 };
 
 
-/** Post a role */
+/** Post a role_queries */
 export const createRole = async (req: Request, res: Response) => {
     let role: IRole|undefined;
 
@@ -50,7 +50,7 @@ export const createRole = async (req: Request, res: Response) => {
 
 
 /**
- * DELETE a role
+ * DELETE a role_queries
  */
 export const deleteRole = async (req: Request, res: Response) => {
     let role: IRole|undefined;
@@ -67,7 +67,7 @@ export const deleteRole = async (req: Request, res: Response) => {
 
 
 /**
- * GET a role
+ * GET a role_queries
  */
 export const getRole = async (req: Request, res: Response) => {
     let data: IRole|undefined;
@@ -84,7 +84,7 @@ export const getRole = async (req: Request, res: Response) => {
 
 
 /**
- * Put a role
+ * Put a role_queries
  */
 export const updateRole = async (req: Request, res: Response) => {
     let data: IRole|undefined;

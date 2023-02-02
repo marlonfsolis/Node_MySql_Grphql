@@ -23,7 +23,7 @@ export default class RoleRepository
 
 
     /**
-     * Get a role list
+     * Get a role_queries list
      */
     async getRoles(params:GetRolesParam): Promise<IResult<IRole[]>> {
         let roles = [] as IRole[];
@@ -35,7 +35,7 @@ export default class RoleRepository
 
 
     /**
-     * Create a role
+     * Create a role_queries
      */
     async createRole(r:IRole): Promise<IResult<IRole>> {
         let role: IRole|undefined;
@@ -59,7 +59,7 @@ export default class RoleRepository
 
 
     /**
-     * Delete a role
+     * Delete a role_queries
      */
     async deleteRole(rName:string): Promise<IResult<IRole>> {
         let role: IRole|undefined;
@@ -79,7 +79,7 @@ export default class RoleRepository
 
 
     /**
-     * Get a role
+     * Get a role_queries
      */
     async getRole(rName:string): Promise<IResult<IRole>> {
         let role: IRole|undefined;
@@ -97,12 +97,12 @@ export default class RoleRepository
 
 
     /**
-     * Update a role
+     * Update a role_queries
      */
     async updateRole(rName:string, r:IRole): Promise<IResult<IRole>> {
         let role: IRole|undefined;
 
-        // verify that the role exists
+        // verify that the role_queries exists
         let sqlRes = await this.getRole(rName);
         if (!sqlRes.success || !sqlRes.data || sqlRes.data.name !== rName) {
             return new ResultErrorNotFound(`Role not found.`, `roleRepository.updateRole`);
@@ -127,7 +127,7 @@ export default class RoleRepository
             const params:any = { name: rName, newName: r.name, newDescription: r.description };
             const sr = await db.query(queries.role_update, params, {multiStatements:true, conn});
             role = sr.getData<IRole[]>()[0];
-            // console.log(role, sr.resultSetHeader);
+            // console.log(role_queries, sr.resultSetHeader);
 
             if (typeof role !== `undefined`) {
                 await conn.commit();
@@ -149,7 +149,7 @@ export default class RoleRepository
 
 
     /**
-     * Get a role with permissions
+     * Get a role_queries with permissions
      */
     async getRoleWithPermissions(rName:string): Promise<IResult<IRoleWithPermissions>> {
         let role = {} as IRoleWithPermissions;
@@ -159,7 +159,7 @@ export default class RoleRepository
         // console.log(sr.data);
         role.role = sr.getData<IRole[]>(0)[0];
         role.permissions = sr.getData<IPermission[]>(1);
-        // console.log(role);
+        // console.log(role_queries);
         if (typeof role.role === `undefined`) {
             return new ResultErrorNotFound(`Role not found.`, `roleRepository.getRole`);
         }
