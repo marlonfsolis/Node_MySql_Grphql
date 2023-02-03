@@ -13,6 +13,7 @@ process.env["NODE_CONFIG_DIR"] = path.resolve(__dirname, "config");
 import {dbDebug, debug} from "./startup/debuggers";
 import routesLoader from "./startup/routes";
 import createDbConnection from "./startup/database";
+import createGraphql from "./startup/graphql";
 
 import {validateConfig} from "./utils/configuration";
 
@@ -30,8 +31,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Load routes
-routesLoader(app);
+// Create graphql server
+createGraphql(app)
+    .then(() => {
+        // Load routes
+        routesLoader(app);
+    })
+    .then(()=>{
+        debug(`GraphQL endpoint: http://localhost:${app.get("port")}/graphql`)
+    });
 
 // Create database connection pool
 createDbConnection(app);
