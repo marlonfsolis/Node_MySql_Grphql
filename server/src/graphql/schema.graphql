@@ -1,25 +1,35 @@
+
 type Query {
-    permissions: [Permission!]
+    permissions(input:PermissionsRead!): [Permission!]
 }
 
 type Mutation {
-    permissionCreate(input: PermissionCrete!): Permission
+    permissionCreate(input: PermissionCreteUpdate!): Permission
 }
 
 # Model types
 type Permission {
-    name: String,
+    name: String!,
     description: String
 }
 
 type Role {
-    name: String,
+    name: String!,
     description: String
 }
 
 
 # Input types
-input PermissionCrete {
+input PermissionsRead {
     name: String,
+    description: String,
+    name_s: String,
+    description_s: String,
+    fetchRows: String,
+    offsetRows: String
+}
+
+input PermissionCreteUpdate {
+    name: String!,
     description: String
 }

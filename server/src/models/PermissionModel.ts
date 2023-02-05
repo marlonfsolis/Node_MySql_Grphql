@@ -11,10 +11,10 @@ export interface IPermission {
 }
 
 export interface IGetPermissionsParam extends IGetListParam {
-   name: string;
-   description: string;
-   name_s: string;
-   description_s: string;
+   name?: string;
+   description?: string;
+   name_s?: string;
+   description_s?: string;
 }
 
 
