@@ -12,9 +12,6 @@ const config: CodegenConfig = {
         useIndexSignature: true,
         // contextType: "./Graphql.ctx#GraphqlContext"
       }
-    },
-    "src/graphql/graphql.schema.json": {
-      plugins: ["introspection"]
     }
   }
 };

@@ -3,7 +3,9 @@ import {IResult} from "../shared/Result";
 import {IGetPermissionsParam, IPermission} from "../models/PermissionModel";
 import PermissionRepository from "../repositories/permissionRepository";
 
-import {Permission, PermissionsRead} from "../graphql/resolvers-types";
+import {
+    Permission, PermissionsRead, PermissionCreteUpdate, PermissionDelete
+} from "../graphql/resolvers-types";
 
 
 export default class PermissionService
@@ -48,11 +50,39 @@ export default class PermissionService
 
 
     /**
+     * Create a permission for Graphql
+     */
+    async createPermission_graphql(p:PermissionCreteUpdate): Promise<Permission> {
+        const perm:IPermission = {
+            name: p.name,
+            description: p.description || ""
+        };
+        const result = await this.permRepo.createPermission(perm);
+        if (result.success && result.data) return result.data;
+        if (result.err && result.err.msg) throw new Error(result.err.msg);
+        throw new Error("500|Internal server error");
+    }
+
+
+    /**
      * Delete a permission_queries
      */
     async deletePermission(pName:string): Promise<IResult<IPermission>> {
         return await this.permRepo.deletePermission(pName);
     }
+
+
+    /**
+     * Delete a permission for Graphql
+     */
+    async deletePermission_graphql(input:PermissionDelete): Promise<Permission> {
+        const pName:string = input.name || "";
+        const result = await this.permRepo.deletePermission(pName);
+        if (result.success && result.data) return result.data;
+        if (result.err && result.err.msg) throw new Error(result.err.msg);
+        throw new Error("500|Internal server error");
+    }
+
 
     /**
      * Get a permission_queries

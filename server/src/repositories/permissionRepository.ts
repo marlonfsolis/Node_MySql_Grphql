@@ -69,7 +69,7 @@ export default class PermissionRepository
 
         let sql = `${queries.permission_create} ${queries.permission_read}`;
         const perRes = await db.query(sql, p, {multiStatements:true});
-        permission = perRes.getData<IPermission[]>()[0];
+        permission = perRes.getData<IPermission[]>(0)[0];
         // console.log(permission_queries);
 
         return new ResultOk(permission);
@@ -90,7 +90,7 @@ export default class PermissionRepository
                 return ResultErrorNotFound.instance(
                     new Error(`Permission not found.`), `permissionRepository.deletePermission`);
         }
-        permission = r.getData<IPermission[]>()[0];
+        permission = r.getData<IPermission[]>(0)[0];
         return new ResultOk(permission);
     }
 

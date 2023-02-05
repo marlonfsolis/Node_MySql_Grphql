@@ -4,7 +4,8 @@ type Query {
 }
 
 type Mutation {
-    permissionCreate(input: PermissionCreteUpdate!): Permission
+    permissionCreate(input: PermissionCreteUpdate!): Permission,
+    permissionDelete(input: PermissionDelete!): Permission
 }
 
 # Model types
@@ -32,4 +33,8 @@ input PermissionsRead {
 input PermissionCreteUpdate {
     name: String!,
     description: String
+}
+
+input PermissionDelete {
+    name: String!
 }

@@ -12,11 +12,14 @@ const resolvers: Resolvers = {
         },
     },
 
-    // Mutation: {
-    //     permissionCreate: (_, input, ctx) => {
-    //         //return null;
-    //     }
-    // }
+    Mutation: {
+        permissionCreate: async (_, {input}, ctx) => {
+            return await permService.createPermission_graphql(input);
+        },
+        permissionDelete: async (_, {input}, ctx) => {
+            return await permService.deletePermission_graphql(input);
+        }
+    }
 };
 
 export default resolvers;
