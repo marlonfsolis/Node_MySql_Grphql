@@ -6,7 +6,7 @@
     "start:dist": "node dist/bin/www.js",
     "start:dev": "set DEBUG=node-mysql-graphql:* & nodemon src/bin/www.ts",
     "build:prod": "tsc --project tsconfig.prod.json",
-    "build:test": "tsc --build",
+    "build": "tsc --build",
     "codegen": "graphql-codegen --config src/graphql/codegen.ts"
   },
   "dependencies": {

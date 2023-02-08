@@ -38,7 +38,7 @@ createGraphql(app)
         routesLoader(app);
     })
     .then(()=>{
-        debug(`GraphQL endpoint: http://localhost:${app.get("port")}/graphql`)
+        console.log(`GraphQL endpoint: http://localhost:${app.get("port")}/graphql`);
     });
 
 // Create database connection pool
