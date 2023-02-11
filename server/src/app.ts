@@ -11,7 +11,6 @@ process.env["NODE_CONFIG_DIR"] = path.resolve(__dirname, "config");
 
 
 import {dbDebug, debug} from "./startup/debuggers";
-import routesLoader from "./startup/routes";
 import createDbConnection from "./startup/database";
 import createGraphql from "./startup/graphql";
 
@@ -33,10 +32,6 @@ app.use(cookieParser());
 
 // Create graphql server
 createGraphql(app)
-    .then(() => {
-        // Load routes
-        routesLoader(app);
-    })
     .then(()=>{
         console.log(`GraphQL endpoint: http://localhost:${app.get("port")}/graphql`);
     });

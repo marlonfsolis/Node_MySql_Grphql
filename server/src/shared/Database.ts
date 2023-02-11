@@ -158,8 +158,6 @@ class DataBase implements IDataBase
            }
        }
 
-
-
         if (!options) options = {
             multiStatements:false,
             conn: this.Pool

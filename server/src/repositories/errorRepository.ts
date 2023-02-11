@@ -1,8 +1,6 @@
 import {db} from "../shared/Database";
 import {queries} from "../queries";
 
-import {ErrorLogModel, IErrorLogModel} from "../models/ErrorLogModel";
-
 
 export default class ErrorRepository {
     constructor() {}
@@ -10,7 +8,7 @@ export default class ErrorRepository {
     /**
      * Log Error
      */
-    async logError(errLog: ErrorLogModel)
+    async logError(errLog: any)
     {
         const result = await db.query(queries.error_create, errLog);
         // console.log(result);

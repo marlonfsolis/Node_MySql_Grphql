@@ -1,23 +1,22 @@
-import {Resolvers, Permission} from "./resolvers-types";
-import {IGetPermissionsParam} from "../models/PermissionModel";
+import {Resolvers} from "./resolvers-types";
 
-import PermissionService from "../services/permissionService";
+import PermissionRepository from "../repositories/permissionRepository";
 
-const permService = new PermissionService();
+const permRepo = new PermissionRepository();
 
 const resolvers: Resolvers = {
     Query: {
         permissions: async (_, {input}) => {
-            return await permService.getPermissions_graphql(input);
+            return await permRepo.getPermissions(input);
         },
     },
 
     Mutation: {
         permissionCreate: async (_, {input}, ctx) => {
-            return await permService.createPermission_graphql(input);
+            return await permRepo.createPermission(input);
         },
         permissionDelete: async (_, {input}, ctx) => {
-            return await permService.deletePermission_graphql(input);
+            return await permRepo.deletePermission(input);
         }
     }
 };

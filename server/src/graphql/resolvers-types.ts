@@ -22,7 +22,7 @@ export type Mutation = {
 
 
 export type MutationPermissionCreateArgs = {
-  input: PermissionCreteUpdate;
+  input: PermissionCreateUpdate;
 };
 
 
@@ -36,7 +36,7 @@ export type Permission = {
   name: Scalars['String'];
 };
 
-export type PermissionCreteUpdate = {
+export type PermissionCreateUpdate = {
   description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
 };
@@ -143,7 +143,7 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Mutation: ResolverTypeWrapper<{}>;
   Permission: ResolverTypeWrapper<Permission>;
-  PermissionCreteUpdate: PermissionCreteUpdate;
+  PermissionCreateUpdate: PermissionCreateUpdate;
   PermissionDelete: PermissionDelete;
   PermissionsRead: PermissionsRead;
   Query: ResolverTypeWrapper<{}>;
@@ -156,7 +156,7 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Mutation: {};
   Permission: Permission;
-  PermissionCreteUpdate: PermissionCreteUpdate;
+  PermissionCreateUpdate: PermissionCreateUpdate;
   PermissionDelete: PermissionDelete;
   PermissionsRead: PermissionsRead;
   Query: {};

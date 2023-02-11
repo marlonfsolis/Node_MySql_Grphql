@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-    permissionCreate(input: PermissionCreteUpdate!): Permission,
+    permissionCreate(input: PermissionCreateUpdate!): Permission,
     permissionDelete(input: PermissionDelete!): Permission
 }
 
@@ -30,7 +30,7 @@ input PermissionsRead {
     offsetRows: String
 }
 
-input PermissionCreteUpdate {
+input PermissionCreateUpdate {
     name: String!,
     description: String
 }
