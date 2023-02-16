@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="start:dist" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="build:cp" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/server/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start:dist" />
+      <script value="build:cp" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
