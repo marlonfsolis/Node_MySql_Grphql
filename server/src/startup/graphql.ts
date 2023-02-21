@@ -6,6 +6,7 @@ import {ApolloServer} from "@apollo/server";
 import {expressMiddleware, ExpressContextFunctionArgument} from "@apollo/server/express4";
 
 import resolvers from "../graphql/resolvers";
+import {GraphqlContext, getGraphqlContext} from "../graphql/graphql.ctx";
 
 
 const createGraphql = async (app: Express) => {
@@ -22,21 +23,5 @@ const createGraphql = async (app: Express) => {
         }),
     );
 }
-
-interface GraphqlContext {
-    userId?: string,
-    token?: string
-}
-
-const getGraphqlContext = async (ctx: ExpressContextFunctionArgument) => {
-    if (ctx.req.auth) {
-        return {
-            userId: ctx.req.auth.sub,
-            token: ctx.req.headers.token,
-        };
-    }
-    return {};
-}
-
 
 export default createGraphql;
