@@ -1,0 +1,41 @@
+#type Query {
+#  permissions(input: PermissionsRead!): [Permission!]
+#}
+#
+#type Mutation {
+#  permissionCreate(input: PermissionCreateUpdate!): Permission
+#  permissionDelete(input: PermissionDelete!): Permission
+#}
+#
+#type Permission {
+#  name: String!
+#  description: String
+#}
+#
+#input PermissionsRead {
+#  name: String
+#  description: String
+#  name_s: String
+#  description_s: String
+#  fetchRows: String
+#  offsetRows: String
+#}
+#
+#input PermissionCreateUpdate {
+#  name: String!
+#  description: String
+#}
+#
+#input PermissionDelete {
+#  name: String!
+#}
+#
+#type Role {
+#  name: String!
+#  description: String
+#}
+#
+#schema {
+#  query: Query
+#  mutation: Mutation
+#}

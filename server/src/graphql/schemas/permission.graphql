@@ -8,13 +8,9 @@ type Mutation {
     permissionDelete(input: PermissionDelete!): Permission
 }
 
+
 # Model types
 type Permission {
-    name: String!,
-    description: String
-}
-
-type Role {
     name: String!,
     description: String
 }

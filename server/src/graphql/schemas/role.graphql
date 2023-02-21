@@ -1,0 +1,6 @@
+
+# Model types
+type Role {
+    name: String!,
+    description: String
+}

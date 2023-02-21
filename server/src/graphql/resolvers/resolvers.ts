@@ -1,6 +1,6 @@
-import {Resolvers} from "./resolvers-types";
+import {Resolvers} from "../resolvers-types";
 
-import PermissionRepository from "../repositories/permissionRepository";
+import PermissionRepository from "../../repositories/permissionRepository";
 
 const permRepo = new PermissionRepository();
 
