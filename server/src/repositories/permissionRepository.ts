@@ -1,5 +1,5 @@
 import {Permission, PermissionsRead, PermissionCreateUpdate, PermissionDelete} from "../graphql/resolvers-types";
-import {db} from "../shared/Database";
+import {db, SqlParam, IOutputResult} from "../shared/Database";
 import {queries} from "../queries";
 
 
@@ -13,31 +13,32 @@ export default class PermissionRepository
     async getPermissions(params:PermissionsRead): Promise<Permission[]> {
 
         /* Testing new DataBaseSingleton proc call */
-        // const params = [
-        //     new SqlParam(`offsetRows`,0, `in`),
-        //     new SqlParam(`fetchRows`,0, `in`),
-        //     new SqlParam(`filterJson`,null, `in`),
-        //     new SqlParam(`searchJson`,null, `in`),
-        //     new SqlParam(`result`,``, `out`)
-        // ];
-        // const r1 = await db1.call("sp_permissions_readlist",params);
-        // console.log("Procedure: ", r1.getData<Permission>());
-        // const dataRow = r.getData<Permission>(0);
-        // const outputVal = r.getOutputJsonVal<IOutputResult>("@result");
-        // console.log(dataRow, outputVal);
+        const params_1 = [
+            new SqlParam(`offsetRows`,0, `in`),
+            new SqlParam(`fetchRows`,0, `in`),
+            new SqlParam(`filterJson`,null, `in`),
+            new SqlParam(`searchJson`,null, `in`),
+            new SqlParam(`result`,``, `out`)
+        ];
+        const r1 = await db.call("sp_permissions_readlist",params_1);
+        console.log("Procedure: ", r1.getData<Permission>());
+        const dataRow = r1.getData<Permission[]>(0);
+        const outputVal = r1.getOutputJsonVal<IOutputResult>("@result");
+        console.log(dataRow, outputVal);
+        return dataRow;
 
 
         /* Testing file queries */
-        const params2 = {
-            name:params.name,
-            description:params.description,
-            name_s:params.name_s,
-            description_s:params.description_s,
-            fetchRows: params.fetchRows || `10`,
-            offsetRows: params.offsetRows || `0`
-        };
-        const r2 = await db.query(queries.permissionList_read, params2);
-        return r2.getData<Permission[]>();
+        // const params2 = {
+        //     name:params.name,
+        //     description:params.description,
+        //     name_s:params.name_s,
+        //     description_s:params.description_s,
+        //     fetchRows: params.fetchRows || `10`,
+        //     offsetRows: params.offsetRows || `0`
+        // };
+        // const r2 = await db.query(queries.permissionList_read, params2);
+        // return r2.getData<Permission[]>();
     }
 
 

@@ -2,7 +2,91 @@ import mysql, {Pool, Connection, ResultSetHeader} from "mysql2/promise";
 
 import {Configuration as config} from '../utils/configuration';
 import {dbDebug} from '../startup/debuggers';
-import {ISqlResult, SqlResult, SqlParam} from "./SqlResult";
+
+/**
+ * INTERFACE to model a statistic object returned as output from stored procedures
+ * with metadata information about the results of the call.
+ */
+export interface IOutputResult {
+    success: boolean,
+    msg: string,
+    errorLogId: number,
+    recordCount: number
+}
+
+/** INTERFACE to model the result of a stored procedure call.  */
+export interface ISqlResult {
+    data:any[];
+    fields: any[];
+    outParams:any;
+    resultSetHeader:ResultSetHeader;
+    getOutputVal<T>(name:string):T;
+    getOutputJsonVal<T>(name:string):T;
+    getData<T>(idx?:number):T;
+}
+
+/** CLASS to model a stored procedure parameter. */
+export class SqlParam {
+    constructor(
+        public name:string,
+        public value:any,
+        public dir:"in"|"out"
+    ) {
+        this.name = name;
+        this.value = value;
+        this.dir = dir;
+    }
+}
+
+/** CLASS to model the result of a stored procedure call. */
+export class SqlResult implements ISqlResult {
+    public data: any[];
+    public fields: any[];
+    public outParams: any;
+    public resultSetHeader: ResultSetHeader;
+
+    constructor(fields:any[], outParams:object) {
+        this.data = [];
+        this.fields = fields;
+        this.outParams = outParams;
+        this.resultSetHeader = {} as ResultSetHeader;
+    }
+
+    /**
+     * Get the value of the giving parameter.
+     * @param name Parameter name.
+     */
+    getOutputVal<T>(name: string): T {
+        // dbDebug(this.outParams);
+        if (!name.startsWith(`@`)) name = `@${name}`;
+        return this.outParams[name] as T;
+    }
+
+    /**
+     * Get the value parsed of the giving output parameter.
+     * @param name Parameter name.
+     */
+    getOutputJsonVal<T>(name: string): T {
+        // dbDebug(this.outParams);
+        if (!name.startsWith(`@`)) name = `@${name}`;
+        return JSON.parse(this.outParams[name]) as T;
+    }
+
+    /**
+     * Get the data at giving position.
+     * Field data can hold multiple results from multiple query statements.
+     * @param idx
+     */
+    getData<T>(idx:number=-1): T {
+        // console.log(this.data);
+        if (idx === -1) {
+            return (this.data as unknown) as T;
+        }
+        return this.data[idx] as T;
+    }
+
+}
+
 
 export interface IDataBase {
     get Pool(): mysql.Pool;
@@ -91,8 +175,10 @@ class DataBase implements IDataBase
      * Call a stored procedure and return an object of type SqlResult.
      * @param proc {string} - Procedure name.
      * @param params {Array<SqlParam>} - Array of parameters.
-     * @param conn {Pool|Connection} - Connection to be used. If not passed the current connection pool will be created.
+     * @param conn {Pool|Connection} - Connection to be used. If not passed the current connection pool will be used.
      * @return SqlResult Result object like {data,outputParams,fields}
+     * @example db.call(`usp_Person_Read`, [new SqlParam(`id`,1,`in`)]);
+     * @example db.call(`usp_Person_Read`, [new SqlParam(`id`,1,`in`),new SqlParam(`errorMsg`,`out`)]);
      * */
     async call(proc:string, params?:SqlParam[], conn?:Pool|Connection):Promise<ISqlResult> {
         if (!conn) conn = this.Pool;
@@ -101,7 +187,7 @@ class DataBase implements IDataBase
         // call proc(1,2,@OUT)
         let sql = `CALL ${proc}(`;
 
-        // create in parameters
+        // create input parameters
         const inPH = [] as string[];
         const inV = [] as any[];
         const outPH = [] as string[];
@@ -133,7 +219,7 @@ class DataBase implements IDataBase
 
 
 
-        // helper function to add params
+        // helper function to add parameters
         function addParam(p:SqlParam) {
             if (p.dir === `in`) {
                 inPH.push(`?`);
@@ -146,10 +232,11 @@ class DataBase implements IDataBase
     }
 
     /**
-     * Execute a Sql query
+     * Execute a Sql query.
      * @param sql Query to send to the server
      * @param params Parameters for the Sql query on Key:Value pair form
      * @param options Additional options for the query
+     * @example db.query(`SELECT * FROM Person WHERE id=:id`, {id:1}, {multiStatements:false});
      */
     public async query(sql:string, params?: { [key:string]:any }, options?:IQueryOptions): Promise<ISqlResult> {
        if (params) {
@@ -168,7 +255,7 @@ class DataBase implements IDataBase
         try {
             // execute the query
             let rows:any, fields:any;
-            if (options?.multiStatements) {
+            if (options.multiStatements) {
                 [rows,fields] = await conn.query(sql, params);
             } else {
                 [rows,fields] = await conn.execute(sql, params);
@@ -179,7 +266,7 @@ class DataBase implements IDataBase
             // return the sql result
             return this.createSqlResult(rows, fields, {});
         } catch (e:any) {
-            // check if multiStatements is false and we have possible multiple queries
+            // check if multiStatements is false, and we have possible multiple queries
             const arrStatements = sql.match(/;/gi);
             // console.log(arrStatements);
             // console.log(arrStatements?.length);
@@ -192,7 +279,7 @@ class DataBase implements IDataBase
 
 
     /**
-     * Execute a Sql query
+     * Execute a Sql query and return if exists at least one row.
      * @param sql Query to send to the server
      * @param params Parameters for the Sql query on Key:Value pair form
      * @param conn Connection to be used. By default, uses the internal connection pool
@@ -210,7 +297,7 @@ class DataBase implements IDataBase
 
 
     /**
-     * Class to represent s Sql call result.
+     * Creates the SqlResult instance from a Sql call result.
      * If more than one [insert, update or delete] is sent,
      * only the ResultSetHeader for the last one will be returned.
      * @param rows
@@ -224,8 +311,8 @@ class DataBase implements IDataBase
         // If result is iterable. We can have array of objects, or multiple results.
         // If result is not iterable. It is a ResultSetHeader (insert, update or delete).
         if (typeof rows[Symbol.iterator] === "function") {
-            // If the first item is not iterable and it is not the ResultSetHeader
-            // then the result is an array of rows.
+            // If the first item is not iterable, and it is not the ResultSetHeader
+            // then the rows is an array of db rows.
             if (rows.length === 0 ||
                 (typeof rows[0][Symbol.iterator] !== "function"
                 && !isResultSetHeader(rows[0]))
@@ -234,7 +321,7 @@ class DataBase implements IDataBase
                 return callRes;
             }
 
-            // Otherwise we have multiple result sets
+            // Otherwise we have multiple result sets and/or the ResultSetHeader
             const data:any[] = [];
             for (const r of rows) {
                 if (typeof r[Symbol.iterator] === "function") {
