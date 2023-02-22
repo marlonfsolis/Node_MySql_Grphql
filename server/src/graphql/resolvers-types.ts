@@ -18,6 +18,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   permissionCreate?: Maybe<Permission>;
   permissionDelete?: Maybe<Permission>;
+  roleCreate?: Maybe<Role>;
+  roleDelete?: Maybe<Role>;
 };
 
 
@@ -28,6 +30,16 @@ export type MutationPermissionCreateArgs = {
 
 export type MutationPermissionDeleteArgs = {
   input: PermissionDelete;
+};
+
+
+export type MutationRoleCreateArgs = {
+  input: RoleCreateUpdate;
+};
+
+
+export type MutationRoleDeleteArgs = {
+  input: RoleDelete;
 };
 
 export type Permission = {
@@ -57,6 +69,7 @@ export type PermissionsRead = {
 export type Query = {
   __typename?: 'Query';
   permissions?: Maybe<Array<Permission>>;
+  roles?: Maybe<Array<Role>>;
 };
 
 
@@ -64,10 +77,33 @@ export type QueryPermissionsArgs = {
   input: PermissionsRead;
 };
 
+
+export type QueryRolesArgs = {
+  input: RolesRead;
+};
+
 export type Role = {
   __typename?: 'Role';
   description?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+};
+
+export type RoleCreateUpdate = {
+  description?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type RoleDelete = {
+  name: Scalars['String'];
+};
+
+export type RolesRead = {
+  description?: InputMaybe<Scalars['String']>;
+  description_s?: InputMaybe<Scalars['String']>;
+  fetchRows?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  name_s?: InputMaybe<Scalars['String']>;
+  offsetRows?: InputMaybe<Scalars['String']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -148,6 +184,9 @@ export type ResolversTypes = ResolversObject<{
   PermissionsRead: PermissionsRead;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
+  RoleCreateUpdate: RoleCreateUpdate;
+  RoleDelete: RoleDelete;
+  RolesRead: RolesRead;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
 
@@ -161,12 +200,17 @@ export type ResolversParentTypes = ResolversObject<{
   PermissionsRead: PermissionsRead;
   Query: {};
   Role: Role;
+  RoleCreateUpdate: RoleCreateUpdate;
+  RoleDelete: RoleDelete;
+  RolesRead: RolesRead;
   String: Scalars['String'];
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   permissionCreate?: Resolver<Maybe<ResolversTypes['Permission']>, ParentType, ContextType, RequireFields<MutationPermissionCreateArgs, 'input'>>;
   permissionDelete?: Resolver<Maybe<ResolversTypes['Permission']>, ParentType, ContextType, RequireFields<MutationPermissionDeleteArgs, 'input'>>;
+  roleCreate?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<MutationRoleCreateArgs, 'input'>>;
+  roleDelete?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<MutationRoleDeleteArgs, 'input'>>;
 }>;
 
 export type PermissionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Permission'] = ResolversParentTypes['Permission']> = ResolversObject<{
@@ -177,6 +221,7 @@ export type PermissionResolvers<ContextType = any, ParentType extends ResolversP
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   permissions?: Resolver<Maybe<Array<ResolversTypes['Permission']>>, ParentType, ContextType, RequireFields<QueryPermissionsArgs, 'input'>>;
+  roles?: Resolver<Maybe<Array<ResolversTypes['Role']>>, ParentType, ContextType, RequireFields<QueryRolesArgs, 'input'>>;
 }>;
 
 export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = ResolversObject<{

@@ -21,10 +21,10 @@ export default class PermissionRepository
             new SqlParam(`result`,``, `out`)
         ];
         const r1 = await db.call("sp_permissions_readlist",params_1);
-        console.log("Procedure: ", r1.getData<Permission>());
+        // console.log("Procedure: ", r1.getData<Permission>());
         const dataRow = r1.getData<Permission[]>(0);
         const outputVal = r1.getOutputJsonVal<IOutputResult>("@result");
-        console.log(dataRow, outputVal);
+        // console.log(dataRow, outputVal);
         return dataRow;
 
 

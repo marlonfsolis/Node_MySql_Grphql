@@ -1,6 +1,36 @@
 
+type Query {
+    roles(input:RolesRead!): [Role!]
+}
+
+type Mutation {
+    roleCreate(input: RoleCreateUpdate!): Role,
+    roleDelete(input: RoleDelete!): Role
+}
+
+
 # Model types
 type Role {
     name: String!,
     description: String
+}
+
+
+# Input types
+input RolesRead {
+    name: String,
+    description: String,
+    name_s: String,
+    description_s: String,
+    fetchRows: String,
+    offsetRows: String
+}
+
+input RoleCreateUpdate {
+    name: String!,
+    description: String
+}
+
+input RoleDelete {
+    name: String!
 }
