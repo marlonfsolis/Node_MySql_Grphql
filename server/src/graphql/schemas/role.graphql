@@ -1,36 +1,56 @@
 
 type Query {
+    """ List of roles. """
     roles(input:RolesRead!): [Role!]
 }
 
 type Mutation {
+    """ Create a role. """
     roleCreate(input: RoleCreateUpdate!): Role,
+    """ Delete a role. """
     roleDelete(input: RoleDelete!): Role
 }
 
 
 # Model types
+
+""" Role type. A role can group one or more permissions. """
 type Role {
+    """ The role's name. It is unique. """
     name: String!,
+    """ Role's description. Describe what the role can do. """
     description: String
 }
 
 
 # Input types
+
+""" Information to search roles. """
 input RolesRead {
+    """ Filter by name. """
     name: String,
+    """ Filter by description. """
     description: String,
+    """ Search by name. """
     name_s: String,
+    """ Search by description.  """
     description_s: String,
+    """ What is the page size. """
     fetchRows: String,
+    """ What is the current page. """
     offsetRows: String
 }
 
+""" Information to create or update a role. """
 input RoleCreateUpdate {
+    """ A unique name for the role. """
     name: String!,
+    """ The role's description. """
     description: String
 }
 
+""" Information to delete a role. """
 input RoleDelete {
+    """ A unique name of the role that need to be deleted. """
     name: String!
 }

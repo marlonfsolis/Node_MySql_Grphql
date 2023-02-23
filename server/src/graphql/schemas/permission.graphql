@@ -1,36 +1,56 @@
 
 type Query {
+    """ Get a list of permissions. """
     permissions(input:PermissionsRead!): [Permission!]
 }
 
 type Mutation {
+    """ Create a new permission. """
     permissionCreate(input: PermissionCreateUpdate!): Permission,
+    """ Delete a permission by it's name. """
     permissionDelete(input: PermissionDelete!): Permission
 }
 
 
 # Model types
+
+""" Permission type """
 type Permission {
+    """ The permission's name. It is unique.  """
     name: String!,
+    """ Description for the permission. Describe what the permission can do. """
     description: String
 }
 
 
 # Input types
+
+""" Information to search for permissions. """
 input PermissionsRead {
+    """ Filter by name. """
     name: String,
+    """ Filter by description. """
     description: String,
+    """ Search by name. """
     name_s: String,
+    """ Search by description.  """
     description_s: String,
+    """ What is the page size. """
     fetchRows: String,
+    """ What is the current page. """
     offsetRows: String
 }
 
+""" Information for create or update a permission. """
 input PermissionCreateUpdate {
+    """ A unique name for the permission. """
     name: String!,
+    """ The permission's description. """
     description: String
 }
 
+""" Information for delete a permission. """
 input PermissionDelete {
+    """ A unique name of the permission that need to be deleted. """
     name: String!
 }
