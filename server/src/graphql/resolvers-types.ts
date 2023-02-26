@@ -16,9 +16,13 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /**  Create a new permission.  */
   permissionCreate?: Maybe<Permission>;
+  /**  Delete a permission by it's name.  */
   permissionDelete?: Maybe<Permission>;
+  /**  Create a role.  */
   roleCreate?: Maybe<Role>;
+  /**  Delete a role.  */
   roleDelete?: Maybe<Role>;
 };
 
@@ -42,33 +46,50 @@ export type MutationRoleDeleteArgs = {
   input: RoleDelete;
 };
 
+/**  Permission type  */
 export type Permission = {
   __typename?: 'Permission';
+  /**  Description for the permission. Describe what the permission can do.  */
   description?: Maybe<Scalars['String']>;
+  /**  The permission's name. It is unique.   */
   name: Scalars['String'];
 };
 
+/**  Information for create or update a permission.  */
 export type PermissionCreateUpdate = {
+  /**  The permission's description.  */
   description?: InputMaybe<Scalars['String']>;
+  /**  A unique name for the permission.  */
   name: Scalars['String'];
 };
 
+/**  Information for delete a permission.  */
 export type PermissionDelete = {
+  /**  A unique name of the permission that need to be deleted.  */
   name: Scalars['String'];
 };
 
+/**  Information to search for permissions.  */
 export type PermissionsRead = {
+  /**  Filter by description.  */
   description?: InputMaybe<Scalars['String']>;
+  /**  Search by description.   */
   description_s?: InputMaybe<Scalars['String']>;
+  /**  What is the page size.  */
   fetchRows?: InputMaybe<Scalars['String']>;
+  /**  Filter by name.  */
   name?: InputMaybe<Scalars['String']>;
+  /**  Search by name.  */
   name_s?: InputMaybe<Scalars['String']>;
+  /**  What is the current page.  */
   offsetRows?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  /**  Get a list of permissions.  */
   permissions?: Maybe<Array<Permission>>;
+  /**  List of roles.  */
   roles?: Maybe<Array<Role>>;
 };
 
@@ -82,27 +103,42 @@ export type QueryRolesArgs = {
   input: RolesRead;
 };
 
+/**  Role type. A role can group one or more permissions.  */
 export type Role = {
   __typename?: 'Role';
+  /**  Role's description. Describe what the role can do.  */
   description?: Maybe<Scalars['String']>;
+  /**  The role's name. It is unique.  */
   name: Scalars['String'];
 };
 
+/**  Information to create or update a role.  */
 export type RoleCreateUpdate = {
+  /**  The role's description.  */
   description?: InputMaybe<Scalars['String']>;
+  /**  A unique name for the role.  */
   name: Scalars['String'];
 };
 
+/**  Information to delete a role.  */
 export type RoleDelete = {
+  /**  A unique name of the role that need to be deleted.  */
   name: Scalars['String'];
 };
 
+/**  Information to search roles.  */
 export type RolesRead = {
+  /**  Filter by description.  */
   description?: InputMaybe<Scalars['String']>;
+  /**  Search by description.   */
   description_s?: InputMaybe<Scalars['String']>;
+  /**  What is the page size.  */
   fetchRows?: InputMaybe<Scalars['String']>;
+  /**  Filter by name.  */
   name?: InputMaybe<Scalars['String']>;
+  /**  Search by name.  */
   name_s?: InputMaybe<Scalars['String']>;
+  /**  What is the current page.  */
   offsetRows?: InputMaybe<Scalars['String']>;
 };
 
