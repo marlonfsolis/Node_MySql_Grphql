@@ -14,51 +14,36 @@ export default class PermissionRepository
 
         /* Testing new DataBaseSingleton proc call */
         const params_1 = [
-            new SqlParam(`offsetRows`,0, `in`),
-            new SqlParam(`fetchRows`,0, `in`),
-            new SqlParam(`filterJson`,null, `in`),
-            new SqlParam(`searchJson`,null, `in`),
-            new SqlParam(`result`,``, `out`)
+            new SqlParam(`offsetRows`, params.offsetRows, `in`),
+            new SqlParam(`fetchRows`,params.fetchRows, `in`),
+            new SqlParam(`name`, params.name, `in`),
+            new SqlParam(`name_s`, params.name_s, `in`),
+            new SqlParam(`description_s`, params.description_s, `in`)
         ];
-        const r1 = await db.call("sp_permissions_readlist",params_1);
+        const r1 = await db.call("sp_permission_readlist",params_1);
         // console.log("Procedure: ", r1.getData<Permission>());
-        const dataRow = r1.getData<Permission[]>(0);
-        const outputVal = r1.getOutputJsonVal<IOutputResult>("@result");
-        // console.log(dataRow, outputVal);
+        const metadata = r1.getData(0);
+        const dataRow = r1.getData<Permission[]>(1);
+
+        // console.log(dataRow, metadata);
         return dataRow;
-
-
-        /* Testing file queries */
-        // const params2 = {
-        //     name:params.name,
-        //     description:params.description,
-        //     name_s:params.name_s,
-        //     description_s:params.description_s,
-        //     fetchRows: params.fetchRows || `10`,
-        //     offsetRows: params.offsetRows || `0`
-        // };
-        // const r2 = await db.query(queries.permissionList_read, params2);
-        // return r2.getData<Permission[]>();
     }
 
 
     /**
      * Create a permission
      */
-    async createPermission(p:PermissionCreateUpdate): Promise<Permission> {
+    async createPermission(p:PermissionCreateUpdate): Promise<Permission|undefined> {
         let permission: Permission|undefined;
 
-        let params:any = { name: p.name };
-        const exists = await db.exists(queries.permissionExists_read, params);
-        if (exists) {
-            // Return an error result and log in DB.
-            throw new Error(`Permission already exists.`);
-        }
-
-        let sql = `${queries.permission_create} ${queries.permission_read}`;
-        const perRes = await db.query(sql, p, {multiStatements:true});
-        permission = perRes.getData<Permission[]>(0)[0];
-        // console.log(permission_queries);
+        const params = [
+            new SqlParam(`name`, p.name, `in`),
+            new SqlParam(`description`, p.description, `in`)
+        ];
+        const r = await db.call("sp_permission_create", params);
+        // console.log("Procedure: ", r.getData<Permission>(0));
+        const dataRow = r.getData<Permission[]>(0);
+        permission = dataRow[0];
 
         return permission;
     }
@@ -67,17 +52,17 @@ export default class PermissionRepository
     /**
      * Delete a permission
      */
-    async deletePermission(input:PermissionDelete): Promise<Permission> {
+    async deletePermission(input:PermissionDelete): Promise<Permission|undefined> {
         let permission: Permission|undefined;
 
-        const params:any = { name: input.name };
-        const sql = `${queries.permission_read} ${queries.permission_delete}`;
-        const r = await db.query(sql, params, {multiStatements:true});
-        // console.log(r);
-        if (r.resultSetHeader.affectedRows === 0) {
-            throw new Error(`Permission not found.`);
-        }
-        permission = r.getData<Permission[]>(0)[0];
+        const params = [
+            new SqlParam(`name`, input.name, `in`),
+        ];
+        const r = await db.call("sp_permission_delete", params);
+        // console.log("Procedure: ", r.getData<Permission>(0));
+        const dataRow = r.getData<Permission[]>(0);
+        permission = dataRow[0];
+
         return permission;
     }
 
@@ -85,17 +70,16 @@ export default class PermissionRepository
     /**
      * Get a permission
      */
-    async getPermission(pName:string): Promise<Permission> {
+    async getPermission(pName:string): Promise<Permission|undefined> {
         let permission: Permission|undefined;
 
-        const params:any = { name: pName };
-        const sql = `${queries.permission_read}`;
-        const r = await db.query(sql, params, {multiStatements:false});
-        // console.log(r);
-        permission = r.getData<Permission[]>()[0];
-        if (typeof permission === `undefined`) {
-            throw new Error(`Permission not found.`);
-        }
+        const params = [
+            new SqlParam(`name`, pName, `in`),
+        ];
+        const r = await db.call("sp_permission_read", params);
+        // console.log("Procedure: ", r.getData<Permission[]>(0));
+        const dataRow = r.getData<Permission[]>(0);
+        permission = dataRow[0];
 
         return permission;
     }

@@ -71,26 +71,31 @@ export type PermissionDelete = {
 
 /**  Information to search for permissions.  */
 export type PermissionsRead = {
-  /**  Filter by description.  */
-  description?: InputMaybe<Scalars['String']>;
   /**  Search by description.   */
   description_s?: InputMaybe<Scalars['String']>;
   /**  What is the page size.  */
-  fetchRows?: InputMaybe<Scalars['String']>;
+  fetchRows?: InputMaybe<Scalars['Int']>;
   /**  Filter by name.  */
   name?: InputMaybe<Scalars['String']>;
   /**  Search by name.  */
   name_s?: InputMaybe<Scalars['String']>;
   /**  What is the current page.  */
-  offsetRows?: InputMaybe<Scalars['String']>;
+  offsetRows?: InputMaybe<Scalars['Int']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  /**  Get a permission by name.  */
+  permission: Permission;
   /**  Get a list of permissions.  */
   permissions?: Maybe<Array<Permission>>;
   /**  List of roles.  */
   roles?: Maybe<Array<Role>>;
+};
+
+
+export type QueryPermissionArgs = {
+  input: Scalars['String'];
 };
 
 
@@ -213,6 +218,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Permission: ResolverTypeWrapper<Permission>;
   PermissionCreateUpdate: PermissionCreateUpdate;
@@ -229,6 +235,7 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  Int: Scalars['Int'];
   Mutation: {};
   Permission: Permission;
   PermissionCreateUpdate: PermissionCreateUpdate;
@@ -256,6 +263,7 @@ export type PermissionResolvers<ContextType = any, ParentType extends ResolversP
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  permission?: Resolver<ResolversTypes['Permission'], ParentType, ContextType, RequireFields<QueryPermissionArgs, 'input'>>;
   permissions?: Resolver<Maybe<Array<ResolversTypes['Permission']>>, ParentType, ContextType, RequireFields<QueryPermissionsArgs, 'input'>>;
   roles?: Resolver<Maybe<Array<ResolversTypes['Role']>>, ParentType, ContextType, RequireFields<QueryRolesArgs, 'input'>>;
 }>;

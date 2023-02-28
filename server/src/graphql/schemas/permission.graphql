@@ -1,5 +1,8 @@
 
 type Query {
+    """ Get a permission by name. """
+    permission(input:String!): Permission!,
+
     """ Get a list of permissions. """
     permissions(input:PermissionsRead!): [Permission!]
 }
@@ -29,16 +32,14 @@ type Permission {
 input PermissionsRead {
     """ Filter by name. """
     name: String,
-    """ Filter by description. """
-    description: String,
     """ Search by name. """
     name_s: String,
     """ Search by description.  """
     description_s: String,
     """ What is the page size. """
-    fetchRows: String,
+    fetchRows: Int,
     """ What is the current page. """
-    offsetRows: String
+    offsetRows: Int
 }
 
 """ Information for create or update a permission. """

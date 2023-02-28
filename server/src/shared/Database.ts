@@ -223,7 +223,7 @@ class DataBase implements IDataBase
         function addParam(p:SqlParam) {
             if (p.dir === `in`) {
                 inPH.push(`?`);
-                inV.push(p.value);
+                inV.push(p.value || null);
             } else {
                 outPH.push(`??`);
                 outV.push(`@${p.name}`);
