@@ -203,6 +203,7 @@ class DataBase implements IDataBase
         sql = sql.concat(inPH.concat(outV).join());
         sql = sql.concat(");");
         // console.log(sql);
+        // console.log(inV);
 
         // execute proc
         const [rows,fields] = await conn.execute(sql, inV.concat(outV));
@@ -223,7 +224,7 @@ class DataBase implements IDataBase
         function addParam(p:SqlParam) {
             if (p.dir === `in`) {
                 inPH.push(`?`);
-                inV.push(p.value || null);
+                inV.push(p.value === undefined ? null : p.value);
             } else {
                 outPH.push(`??`);
                 outV.push(`@${p.name}`);
