@@ -9,9 +9,13 @@ type Query {
 
 type Mutation {
     """ Create a new permission. """
-    permissionCreate(input: PermissionCreateUpdate!): Permission,
+    permissionCreate(input: PermissionCreate!): Permission,
+
     """ Delete a permission by it's name. """
     permissionDelete(input: PermissionDelete!): Permission
+
+    """ Update a permission by it's name. """
+    permissionUpdate(input: PermissionUpdate!): Permission
 }
 
 
@@ -43,9 +47,19 @@ input PermissionsRead {
 }
 
 """ Information for create or update a permission. """
-input PermissionCreateUpdate {
+input PermissionCreate {
     """ A unique name for the permission. """
     name: String!,
+    """ The permission's description. """
+    description: String
+}
+
+""" Information for create or update a permission. """
+input PermissionUpdate {
+    """ A unique current name for the permission. """
+    p_name: String!,
+    """ A unique new name for the permission. """
+    name: String,
     """ The permission's description. """
     description: String
 }

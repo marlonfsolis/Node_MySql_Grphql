@@ -39,12 +39,33 @@ const resolvers: Resolvers = {
             return permission;
         },
 
-
+        /**
+         * Delete permission
+         */
         permissionDelete: async (_, {input}, ctx) => {
             const p = await permRepo.deletePermission(input);
             if (!p) {
                 throw BadUserInput(`The permission was not found.`);
             }
+            return p;
+        },
+
+        /**
+         * Update permission
+         */
+        permissionUpdate: async (_, {input}, ctx) => {
+            let p = await permRepo.getPermission(input.p_name);
+            if (!p) throw BadUserInput(`The permission was not found.`);
+
+            if (input.name && input.p_name !== input.name) {
+                p = await permRepo.getPermission(input.name);
+                if (p) throw BadUserInput(`A permission with this name already exists.`);
+            }
+
+            if (!input.name) input.name = input.p_name;
+            p = await permRepo.updatePermission(input);
+            if (!p) throw InternalServerError(`There was a problem saving your changes.`);
+
             return p;
         }
     }

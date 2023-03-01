@@ -20,6 +20,8 @@ export type Mutation = {
   permissionCreate?: Maybe<Permission>;
   /**  Delete a permission by it's name.  */
   permissionDelete?: Maybe<Permission>;
+  /**  Update a permission by it's name.  */
+  permissionUpdate?: Maybe<Permission>;
   /**  Create a role.  */
   roleCreate?: Maybe<Role>;
   /**  Delete a role.  */
@@ -28,12 +30,17 @@ export type Mutation = {
 
 
 export type MutationPermissionCreateArgs = {
-  input: PermissionCreateUpdate;
+  input: PermissionCreate;
 };
 
 
 export type MutationPermissionDeleteArgs = {
   input: PermissionDelete;
+};
+
+
+export type MutationPermissionUpdateArgs = {
+  input: PermissionUpdate;
 };
 
 
@@ -56,7 +63,7 @@ export type Permission = {
 };
 
 /**  Information for create or update a permission.  */
-export type PermissionCreateUpdate = {
+export type PermissionCreate = {
   /**  The permission's description.  */
   description?: InputMaybe<Scalars['String']>;
   /**  A unique name for the permission.  */
@@ -67,6 +74,16 @@ export type PermissionCreateUpdate = {
 export type PermissionDelete = {
   /**  A unique name of the permission that need to be deleted.  */
   name: Scalars['String'];
+};
+
+/**  Information for create or update a permission.  */
+export type PermissionUpdate = {
+  /**  The permission's description.  */
+  description?: InputMaybe<Scalars['String']>;
+  /**  A unique new name for the permission.  */
+  name?: InputMaybe<Scalars['String']>;
+  /**  A unique current name for the permission.  */
+  p_name: Scalars['String'];
 };
 
 /**  Information to search for permissions.  */
@@ -221,8 +238,9 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Permission: ResolverTypeWrapper<Permission>;
-  PermissionCreateUpdate: PermissionCreateUpdate;
+  PermissionCreate: PermissionCreate;
   PermissionDelete: PermissionDelete;
+  PermissionUpdate: PermissionUpdate;
   PermissionsRead: PermissionsRead;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
@@ -238,8 +256,9 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int'];
   Mutation: {};
   Permission: Permission;
-  PermissionCreateUpdate: PermissionCreateUpdate;
+  PermissionCreate: PermissionCreate;
   PermissionDelete: PermissionDelete;
+  PermissionUpdate: PermissionUpdate;
   PermissionsRead: PermissionsRead;
   Query: {};
   Role: Role;
@@ -252,6 +271,7 @@ export type ResolversParentTypes = ResolversObject<{
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   permissionCreate?: Resolver<Maybe<ResolversTypes['Permission']>, ParentType, ContextType, RequireFields<MutationPermissionCreateArgs, 'input'>>;
   permissionDelete?: Resolver<Maybe<ResolversTypes['Permission']>, ParentType, ContextType, RequireFields<MutationPermissionDeleteArgs, 'input'>>;
+  permissionUpdate?: Resolver<Maybe<ResolversTypes['Permission']>, ParentType, ContextType, RequireFields<MutationPermissionUpdateArgs, 'input'>>;
   roleCreate?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<MutationRoleCreateArgs, 'input'>>;
   roleDelete?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<MutationRoleDeleteArgs, 'input'>>;
 }>;

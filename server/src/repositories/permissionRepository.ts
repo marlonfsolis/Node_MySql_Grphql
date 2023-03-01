@@ -1,4 +1,10 @@
-import {Permission, PermissionsRead, PermissionCreateUpdate, PermissionDelete} from "../graphql/resolvers-types";
+import {
+    Permission,
+    PermissionsRead,
+    PermissionCreate,
+    PermissionDelete,
+    PermissionUpdate
+} from "../graphql/resolvers-types";
 import {db, SqlParam, IOutputResult} from "../shared/Database";
 import {queries} from "../queries";
 
@@ -33,7 +39,7 @@ export default class PermissionRepository
     /**
      * Create a permission
      */
-    async createPermission(p:PermissionCreateUpdate): Promise<Permission|undefined> {
+    async createPermission(p:PermissionCreate): Promise<Permission|undefined> {
         let permission: Permission|undefined;
 
         const params = [
@@ -87,26 +93,18 @@ export default class PermissionRepository
     /**
      * Update a permission_queries
      */
-    async updatePermission(pName:string, p:Permission): Promise<Permission> {
+    async updatePermission(input:PermissionUpdate): Promise<Permission> {
         let permission: Permission|undefined;
 
-        // verify the new name
-        if (pName !== p.name) {
-            const r = await this.getPermission(p.name);
-            if (r && r.name === p.name) {
-                throw new Error(`Permission already exist.`);
-            }
-        }
-
-        const params = {name:pName, newName:p.name, newDescription:p.description};
-        const sql = `${queries.permission_update}`;
-        let sr = await db.query(sql, params, {multiStatements:true});
-        permission = sr.getData<Permission[]>(0)[0];
-
-        // verify that was found/updated
-        if (sr.resultSetHeader.affectedRows === 0) {
-            throw new Error(`Permission not found.`);
-        }
+        const params = [
+            new SqlParam(`p_name`, input.p_name, `in`),
+            new SqlParam(`name`, input.name, `in`),
+            new SqlParam(`description`, input.description, `in`),
+        ];
+        const r = await db.call("sp_permission_update", params);
+        // console.log("Procedure: ", r.getData<Permission[]>(0));
+        const dataRow = r.getData<Permission[]>(0);
+        permission = dataRow[0];
 
         return permission;
     }
